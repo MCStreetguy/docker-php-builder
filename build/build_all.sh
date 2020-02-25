@@ -27,7 +27,7 @@ while read _VERSION; do
   [ "$QUIET" == "false" ] && echo "Building for PHP v$PHP_VERSION on alpine v$ALPINE_VERSION..." >&2
 
   TAG_NAME="mcstreetguy/php-builder:$PHP_VERSION"
-  if [ "$ALPINE_VERSION" != "latest" ]; then
+  if [ -n "$TAG_APPENDIX" ]; then
     TAG_NAME="$TAG_NAME-$TAG_APPENDIX"
   fi
 
