@@ -1,0 +1,55 @@
+#!/bin/bash
+
+log () {>&2 echo "$@"}
+
+print_usage () {
+  log "USAGE: $0 <extension> [configure_options ...]"
+}
+
+if [ $# -lt 1 ]; then
+  log "ERROR: Missing extension name!"
+  print_usage
+  exit 1
+fi
+
+pecl channel-update pecl.php.net
+pecl config-set php_ini /etc/php7/php.ini
+
+if [ $# -eq 1 ]; then
+  log "Installing php extension '$1' directly with pecl..."
+  exec pecl install -f $1 && rm -rf /tmp/pear
+fi
+
+set -e
+log "Building php extension '$1' from source..."
+
+DIR=$(mktemp -d)
+cd $DIR
+
+log "INFO: working directory: $DIR
+INFO: Downloading and extracting source code for $1
+EXEC: 'pecl bundle -d . $1'"
+pecl bundle -d . $1
+cd $1
+
+log "INFO: Preparing environment
+EXEC: 'phpize'"
+phpize
+
+log "INFO: Configuring compiler options
+EXEC: './configure ${@:2}'"
+./configure ${@:2}
+
+log "INFO: Compiling $1
+EXEC: 'make'"
+make
+
+log "INFO: Installing $1
+EXEC: 'make install'"
+make install
+
+set +e
+rm -rf /tmp/pear
+log "Done. Successfully installed the php extension '$1'."
+log "Make sure you enable it in your php.ini manually! See above for more information on built files."
+exit 0
