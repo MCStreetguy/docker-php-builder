@@ -1,7 +1,8 @@
 ARG ALPINE_VERSION="3.11"
 FROM alpine:${ALPINE_VERSION}
 
-# Add prerequisites
+# Prerequisites
+ENV LC_ALL C
 RUN apk add --no-cache \
       bash \
       bison \
@@ -24,3 +25,6 @@ RUN apk add --no-cache \
       "php7-pear=~${PHP_VERSION}" \
     && \
     rm -rf /var/cache/apk/*
+
+# Add installer script
+COPY ./container/pecl-install-extension /usr/local/bin/
