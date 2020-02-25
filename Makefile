@@ -9,7 +9,7 @@ build:
 	bash ./build/build_all.sh > ./build/versions.txt
 
 .PHONY: publish
-publish: build/versions.txt
+publish: ./build/versions.txt
 	cat ./build/versions.txt | xargs -n 1 -I '{}' bash -c "echo 'Publishing image {} to Docker Hub...'; docker push {}; echo ''"
 
 .PHONY: clean
@@ -18,4 +18,4 @@ clean:
 	rm build/versions.txt
 
 # File targets
-build/versions.txt: build
+./build/versions.txt: build
