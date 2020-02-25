@@ -22,8 +22,8 @@ sed '/^$/d' targets.txt | while read _VERSION; do
   export ALPINE_VERSION
   export PHP_VERSION
 
-  TAG_NAME="mcstreetguy/php-builder:${VERSIONS[2]:-PHP_VERSION}"
-  _CMD="docker build --tag $TAG_NAME --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache .."
+  TAG_NAME="mcstreetguy/php-builder:${VERSIONS[2]:-$PHP_VERSION}"
+  _CMD="docker build --tag $TAG_NAME --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache $(realpath ..)"
 
   if [ "$QUIET" == "false" ]; then
     echo "" >&2
