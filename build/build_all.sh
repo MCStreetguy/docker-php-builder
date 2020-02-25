@@ -28,7 +28,7 @@ sed '/^$/d' targets.txt | while read _VERSION; do
   if [ "$QUIET" == "false" ]; then
     echo "" >&2
     echo "Building for PHP v$PHP_VERSION on alpine v$ALPINE_VERSION..." >&2
-    echo "+ $_CMD" >&2 && echo "" >&2
+    echo "+ $_CMD" >&2
     echo "" >&2
     $_CMD >&2
   else
