@@ -96,6 +96,7 @@ These naming schemes yield the following tag names:
 | `7.2-alpine3.9` | `7.2` | `3.9` |
 | `7.2-alpine3.8` | `7.2` | `3.8` |
 | `7.1-alpine3.7` | `7.1` | `3.7` |
+
 _(table is exemplary and may not be up-to-date!)_
 
 #### Version Compatibility Map
