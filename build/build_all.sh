@@ -14,25 +14,24 @@ fi
 declare -a IMAGES=()
 
 # Read all version combinations and build them
-while read _VERSION; do
+sed '/^$/d' targets.txt | while read _VERSION; do
   VERSIONS=(${_VERSION//;/ })
   ALPINE_VERSION="${VERSIONS[1]}"
-  TAG_APPENDIX="${VERSIONS[2]}"
   PHP_VERSION="${VERSIONS[0]}"
 
   export ALPINE_VERSION
   export PHP_VERSION
 
-  [ "$QUIET" == "false" ] && echo "" >&2
-  [ "$QUIET" == "false" ] && echo "Building for PHP v$PHP_VERSION on alpine v$ALPINE_VERSION..." >&2
-
-  TAG_NAME="mcstreetguy/php-builder:$PHP_VERSION"
-  if [ -n "$TAG_APPENDIX" ]; then
-    TAG_NAME="$TAG_NAME-$TAG_APPENDIX"
+  TAG_NAME="${VERSIONS[2]}"
+  if [ -z "$TAG_NAME" ]; then
+    TAG_NAME="$PHP_VERSION"
   fi
 
   if [ "$QUIET" == "false" ]; then
+    echo "" >&2
+    echo "Building for PHP v$PHP_VERSION on alpine v$ALPINE_VERSION..." >&2
     echo "+ docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .." >&2 && echo "" >&2
+    echo "" >&2
     docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .. >&2
   else
     docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .. &>/dev/null
@@ -43,9 +42,10 @@ while read _VERSION; do
 
   unset PHP_VERSION
   unset ALPINE_VERSION
-done <targets.txt
+done
 
 if [ "$QUIET" == "false" ]; then
+  echo "" >&2
   echo "Done. Built the following images:" >&2
 
   for image in "${IMAGES[@]}"; do
