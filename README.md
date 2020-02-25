@@ -7,13 +7,20 @@ Even though size doesn't matter in a secondary stage container, it allows for mu
 **Contents:**
 
 - [Docker PHP Builder](#docker-php-builder)
+  - [Usage](#usage)
   - [Overview](#overview)
-    - [Preinstalled software](#preinstalled-software)
-    - [Provided tools](#provided-tools)
+    - [Supported Versions](#supported-versions)
+      - [PHP](#php)
+      - [Alpine](#alpine)
+    - [Tag Naming Schemes](#tag-naming-schemes)
+      - [Version Compatibility Map](#version-compatibility-map)
+  - [Reference](#reference)
+    - [Preinstalled Software](#preinstalled-software)
+    - [Provided Tools](#provided-tools)
       - [`pecl-install-extension`](#pecl-install-extension)
       - [`pecl-install-extensions`](#pecl-install-extensions)
 
-## Overview
+## Usage
 
 Use this image as a basis for your Dockerfile builder stage to build and install PHP extensions:
 
@@ -48,7 +55,66 @@ COPY --from=builder /usr/lib/php7/modules/* /usr/lib/php7/modules/
 COPY --from=builder /usr/include/php7/ext/ /usr/include/php7/ext/
 ```
 
-### Preinstalled software
+## Overview
+
+The `php-builder` image is based upon Alpine Linux.
+
+### Supported Versions
+
+#### PHP
+
+- `7.3`
+- `7.2`
+- `7.1`
+
+#### Alpine
+
+- `3.11`
+- `3.10`
+- `3.9`
+- `3.8`
+- `3.7`
+
+### Tag Naming Schemes
+
+We provide three different tag naming schemes for this image:
+
+- `latest`: Built upon the latest alpine image and for the latest supported PHP version
+- `7.x`: Built upon the corresponding alpine image for and with the given PHP version
+- `7.x-alpine3.x`: Built upon the given alpine image version and for the given PHP version
+
+These naming schemes yield the following tag names:
+
+| Tag | PHP Version | Alpine Version |
+|:---:|:-----------:|:--------------:|
+| `latest` | `7.3` | `latest` |
+| `7.3` | `7.3` | `3.11` |
+| `7.2` | `7.2` | `3.9` |
+| `7.1` | `7.1` | `3.7` |
+| `7.3-alpine3.11` | `7.3` | `3.11` |
+| `7.3-alpine3.10` | `7.3` | `3.10` |
+| `7.2-alpine3.9` | `7.2` | `3.9` |
+| `7.2-alpine3.8` | `7.2` | `3.8` |
+| `7.1-alpine3.7` | `7.1` | `3.7` |
+_(table is exemplary and may not be up-to-date!)_
+
+#### Version Compatibility Map
+
+Alpine packages are built against a specific version of the OS, therefore not all packages are available to all versions of Alpine.
+As the only way to circumvent this behaviour would be to build PHP from source for each image, we currently stick to mapping several PHP versions to their suitable Alpine versions.
+(We may add support for such cross-compiled versions in the future through a new tagging scheme.)
+
+| Alpine Version |  | PHP Version |
+|:--------------:|--|:-----------:|
+| `3.11` | -> | `7.3` |
+| `3.10` | -> | `7.3` |
+| `3.9` | -> | `7.2` |
+| `3.8` | -> | `7.2` |
+| `3.7` | -> | `7.1` |
+
+## Reference
+
+### Preinstalled Software
 
 The following packages are preinstalled in their latest available version:
 
@@ -66,7 +132,7 @@ The following packages are preinstalled in their latest available version:
 - [`php7-pear`](https://pkgs.alpinelinux.org/package/edge/community/x86_64/php7-pear)
 - [`php7-openssl`](https://pkgs.alpinelinux.org/package/edge/community/x86_64/php7-openssl) _(required by `php7-pear`)_
 
-### Provided tools
+### Provided Tools
 
 #### `pecl-install-extension`
 
