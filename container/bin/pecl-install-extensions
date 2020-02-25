@@ -1,0 +1,13 @@
+#!/bin/bash
+
+log () {>&2 echo "$@"}
+
+print_usage () {
+  log "USAGE: $0 <extensions ...>"
+}
+
+set -ex
+
+for extension in "$@"; do
+  ./pecl-install-extension $extension
+done
