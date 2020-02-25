@@ -1,5 +1,9 @@
 default: build
 
+# Phony targets
+.PHONY: all
+all: publish
+
 .PHONY: build
 build:
 	bash ./build/build_all.sh > ./build/versions.txt
@@ -13,4 +17,5 @@ clean:
 	cat ./build/versions.txt | xargs -n 1 -I '{}' docker image rm {}
 	rm build/versions.txt
 
+# File targets
 build/versions.txt: build

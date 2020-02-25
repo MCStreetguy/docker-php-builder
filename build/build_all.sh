@@ -22,26 +22,28 @@ sed '/^$/d' targets.txt | while read _VERSION; do
   export ALPINE_VERSION
   export PHP_VERSION
 
-  TAG_NAME="${VERSIONS[2]}"
-  if [ -z "$TAG_NAME" ]; then
-    TAG_NAME="$PHP_VERSION"
-  fi
+  TAG_NAME="mcstreetguy/php-builder:${VERSIONS[2]:-PHP_VERSION}"
+  _CMD="docker build --tag $TAG_NAME --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache .."
 
   if [ "$QUIET" == "false" ]; then
     echo "" >&2
     echo "Building for PHP v$PHP_VERSION on alpine v$ALPINE_VERSION..." >&2
-    echo "+ docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .." >&2 && echo "" >&2
+    echo "+ $_CMD" >&2 && echo "" >&2
     echo "" >&2
-    docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .. >&2
+    $_CMD >&2
   else
-    docker build --tag "$TAG_NAME" --build-arg ALPINE_VERSION --build-arg PHP_VERSION --compress --no-cache --no-cache .. &>/dev/null
+    $_CMD &>/dev/null
   fi
 
   echo "$TAG_NAME" >&1
   IMAGES+=( "$TAG_NAME" )
 
-  unset PHP_VERSION
+  unset _CMD
+  unset _VERSION
   unset ALPINE_VERSION
+  unset PHP_VERSION
+  unset TAG_NAME
+  unset VERSIONS
 done
 
 if [ "$QUIET" == "false" ]; then
@@ -54,4 +56,8 @@ if [ "$QUIET" == "false" ]; then
 fi
 
 cd $PWD
+unset BUILD_DIR
+unset IMAGES
+unset QUIET
+unset PWD
 exit 0
