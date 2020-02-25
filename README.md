@@ -1,8 +1,6 @@
 # Docker PHP Builder
 
 A Docker image for multi-stage-builds, designed for building PHP extensions with ease.
-It is based upon [alpine](https://alpinelinux.org/) to be as small as possible.
-Even though size doesn't matter in a secondary stage container, it allows for much faster builds.
 
 **Contents:**
 
@@ -19,6 +17,9 @@ Even though size doesn't matter in a secondary stage container, it allows for mu
     - [Provided Tools](#provided-tools)
       - [`pecl-install-extension`](#pecl-install-extension)
       - [`pecl-install-extensions`](#pecl-install-extensions)
+  - [Contributing](#contributing)
+  - [Authors](#authors)
+  - [License](#license)
 
 ## Usage
 
@@ -57,9 +58,13 @@ COPY --from=builder /usr/include/php7/ext/ /usr/include/php7/ext/
 
 ## Overview
 
-The `php-builder` image is based upon Alpine Linux.
+The `php-builder` image is based upon [Alpine Linux](https://alpinelinux.org/) to be as small as possible.
+Even though size doesn't matter in a secondary stage container, it allows for much faster builds with less overhead.
 
 ### Supported Versions
+
+The following versions of PHP and Alpine are supported by this image.
+**Please note** that these are not freely combinable! See the [Version Compatibility Map](#version-compatibility-map) for more information.
 
 #### PHP
 
@@ -79,9 +84,9 @@ The `php-builder` image is based upon Alpine Linux.
 
 We provide three different tag naming schemes for this image:
 
-- `latest`: Built upon the latest alpine image and for the latest supported PHP version
-- `7.x`: Built upon the corresponding alpine image for and with the given PHP version
-- `7.x-alpine3.x`: Built upon the given alpine image version and for the given PHP version
+- `latest`: Built upon the latest Alpine image and for it's latest supported PHP version
+- `7.x`: Built for the given PHP version upon the newest compatible Alpine image
+- `7.x-alpine3.x`: Built upon the given Alpine image version for the given PHP version
 
 These naming schemes yield the following tag names:
 
@@ -157,3 +162,17 @@ Use it if you want to install multiple extensions in one statement without any f
 ```Dockerfile
 RUN pecl-install-extensions apcu imagick redis
 ```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Authors
+
+- **Maximilian Schmidt** - *Lead Developer* - [MCStreetguy](https://github.com/MCStreetguy)
+
+See also the list of [contributors](https://github.com/MCStreetguy/docker-php-builder/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
