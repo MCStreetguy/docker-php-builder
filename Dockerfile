@@ -27,4 +27,4 @@ RUN apk add --no-cache \
     rm -rf /var/cache/apk/*
 
 # Add installer script
-COPY ./container/pecl-install-extension /usr/local/bin/
+COPY ./container/ /usr/
