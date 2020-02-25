@@ -17,6 +17,7 @@ declare -a IMAGES=()
 while read _VERSION; do
   VERSIONS=(${_VERSION//;/ })
   ALPINE_VERSION="${VERSIONS[1]}"
+  TAG_APPENDIX="${VERSIONS[2]}"
   PHP_VERSION="${VERSIONS[0]}"
 
   export ALPINE_VERSION
@@ -27,7 +28,7 @@ while read _VERSION; do
 
   TAG_NAME="mcstreetguy/php-builder:$PHP_VERSION"
   if [ "$ALPINE_VERSION" != "latest" ]; then
-    TAG_NAME="$TAG_NAME-alpine$ALPINE_VERSION"
+    TAG_NAME="$TAG_NAME-$TAG_APPENDIX"
   fi
 
   if [ "$QUIET" == "false" ]; then
