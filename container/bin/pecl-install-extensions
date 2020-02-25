@@ -1,6 +1,6 @@
 #!/bin/bash
 
-log () {>&2 echo "$@"}
+log () { >&2 echo "$@"; }
 
 print_usage () {
   log "USAGE: $0 <extensions ...>"
@@ -9,5 +9,5 @@ print_usage () {
 set -ex
 
 for extension in "$@"; do
-  ./pecl-install-extension $extension
+  ./pecl-install-extension "$extension"
 done

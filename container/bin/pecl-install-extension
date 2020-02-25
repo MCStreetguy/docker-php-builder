@@ -1,6 +1,6 @@
 #!/bin/bash
 
-log () {>&2 echo "$@"}
+log () { >&2 echo "$@"; }
 
 print_usage () {
   log "USAGE: $0 <extension> [configure_options ...]"
@@ -17,20 +17,20 @@ pecl config-set php_ini /etc/php7/php.ini
 
 if [ $# -eq 1 ]; then
   log "Installing php extension '$1' directly with pecl..."
-  exec pecl install -f $1 && rm -rf /tmp/pear
+  exec pecl install -f "$1" && rm -rf /tmp/pear
 fi
 
 set -e
 log "Building php extension '$1' from source..."
 
 DIR=$(mktemp -d)
-cd $DIR
+cd "$DIR"
 
 log "INFO: working directory: $DIR
 INFO: Downloading and extracting source code for $1
 EXEC: 'pecl bundle -d . $1'"
-pecl bundle -d . $1
-cd $1
+pecl bundle -d . "$1"
+cd "$1"
 
 log "INFO: Preparing environment
 EXEC: 'phpize'"
