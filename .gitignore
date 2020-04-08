@@ -46,4 +46,4 @@ Temporary Items
 
 # CUSTOM
 
-build/versions.txt
+build/*/versions.txt
