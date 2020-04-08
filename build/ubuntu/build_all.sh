@@ -1,7 +1,5 @@
 #!/bin/bash
 
-pwd
-
 set -e
 PWD=$(pwd)
 BUILD_DIR=$(realpath $(dirname $0))
