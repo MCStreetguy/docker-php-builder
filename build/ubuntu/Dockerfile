@@ -1,10 +1,14 @@
 ARG UBUNTU_VERSION="18.04"
 FROM ubuntu:${UBUNTU_VERSION}
 
+# Build environment
+ARG DEBIAN_FRONTEND="noninteractive"
+ARG LC_ALL="C.UTF-8"
+
 # Prerequisites
-ENV LC_ALL C
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+      apt-utils \
       bash \
       bison \
       coreutils \
@@ -23,9 +27,15 @@ RUN apt-get update && \
 ARG PHP_VERSION="7.3"
 RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common && \
-    LC_ALL=C.UTF-8 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
-    LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
+    add-apt-repository ppa:ondrej/php && \
     apt-get update && \
+    apt-mark hold php-xml && \
+    apt-mark hold php-common && \
+    apt-mark hold php7.4-xml && \
+    apt-mark hold php7.4-common && \
+    apt-mark unhold php${PHP_VERSION}-xml && \
+    apt-mark unhold php${PHP_VERSION}-common && \
     apt-get install -y --no-install-recommends \
       php-pear \
       php${PHP_VERSION} \
@@ -33,6 +43,7 @@ RUN apt-get update && \
       php${PHP_VERSION}-common \
       php${PHP_VERSION}-cli \
       php${PHP_VERSION}-fpm \
+      php${PHP_VERSION}-xml \
     && \
     rm -rf /var/lib/apt/lists/*
 
