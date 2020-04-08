@@ -8,9 +8,11 @@ RUN apt-get update && \
       bash \
       bison \
       coreutils \
+      dirmngr \
       file \
       g++ \
       git \
+      gnupg \
       libtool \
       make \
       re2c \
@@ -28,6 +30,9 @@ RUN apt-get update && \
       php-pear \
       php${PHP_VERSION} \
       php${PHP_VERSION}-dev \
+      php${PHP_VERSION}-common \
+      php${PHP_VERSION}-cli \
+      php${PHP_VERSION}-fpm \
     && \
     rm -rf /var/lib/apt/lists/*
 
