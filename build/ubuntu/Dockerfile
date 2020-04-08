@@ -25,10 +25,9 @@ RUN apt-get update && \
     LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+      php-pear \
       php${PHP_VERSION} \
       php${PHP_VERSION}-dev \
-      php${PHP_VERSION}-openssl \
-      php${PHP_VERSION}-pear \
     && \
     rm -rf /var/lib/apt/lists/*
 
